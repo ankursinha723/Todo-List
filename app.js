@@ -19,29 +19,37 @@ addBtn.addEventListener('click', function () {
         let year = time.getFullYear();
 
         let todayDate = `${year}-${month + 1}-${date}`;
-        let taskId = time.getTime();
 
-        currTodo.taskId = taskId;
-        if(taskInput.value.length > 30) {
-            taskInput.value = taskInput.value.substring(0, 30);
-            taskInput.value += '...';
+        if (deadlineInput.value > todayDate) {
+            let taskId = time.getTime();
 
-            currTodo.taskName = taskInput.value;
+            currTodo.taskId = taskId;
+            if (taskInput.value.length > 30) {
+                taskInput.value = taskInput.value.substring(0, 30);
+                taskInput.value += '...';
+
+                currTodo.taskName = taskInput.value;
+            } else {
+                currTodo.taskName = taskInput.value;
+            }
+
+            console.log(deadlineInput.value < todayDate);
+            currTodo.taskTime = `Added on : ${todayDate}`;
+            currTodo.taskDeadline = `Deadline : ${deadlineInput.value}`;
+            currTodo.taskStatus = `STATUS : Pending`;
+
+            todoArr.push(currTodo);
+            count.innerText = `Count : ${todoArr.length}`;
+            getAllLists();
+
+            message.innerText = 'Task added successfully';
+            showMsg();
+            taskInput.value = '';
+            deadlineInput.value = '';
         } else {
-            currTodo.taskName = taskInput.value;
+            message.innerText = 'Enter a valid deadline';
+            showMsg();
         }
-        currTodo.taskTime = `Added on : ${todayDate}`;
-        currTodo.taskDeadline = `Deadline : ${deadlineInput.value}`;
-        currTodo.taskStatus = `STATUS : Pending`;
-
-        todoArr.push(currTodo);
-        count.innerText = `Count : ${todoArr.length}`;
-        getAllLists();
-
-        message.innerText = 'Task added successfully';
-        showMsg();
-        taskInput.value = '';
-        deadlineInput.value = '';
     } else {
         message.innerText = 'Both fields required';
         showMsg();
@@ -160,7 +168,7 @@ function getAllLists() {
     }
 }
 
-if(todoArr.length == 0) {
+if (todoArr.length == 0) {
     allLists.innerHTML = '<img src="https://img.lovepik.com/element/45004/1309.png_860.png" alt="Empty Logo" id="empty-logo" /> <br/> <h1>List is empty!</h1>'
 } else {
     getAllLists();
